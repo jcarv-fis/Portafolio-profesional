@@ -163,18 +163,48 @@ document.addEventListener('DOMContentLoaded', function () {
     return ok;
   }
 
-  form.addEventListener('submit', function (e) {
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/xqpzbyak";
+
+  form.addEventListener('submit', async function (e) {
     e.preventDefault();
     const m = messages[currentLang];
-    if (validateForm()) {
-      result.className = 'form-result ok';
-      result.textContent = m.ok;
-      form.reset();
-      form.querySelectorAll('.is-valid').forEach(el => el.classList.remove('is-valid'));
-      // Nota: para enviar el correo de verdad, conectar un servicio como Formspree o EmailJS aquí.
-    } else {
+
+    if (!validateForm()) {
       result.className = 'form-result err';
       result.textContent = m.err;
+      return;
+    }
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = currentLang === 'es' ? 'Enviando…' : 'Sending…';
+
+    try {
+      const resp = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
+      });
+      if (resp.ok) {
+        result.className = 'form-result ok';
+        result.textContent = m.ok;
+        form.reset();
+        form.querySelectorAll('.is-valid').forEach(el => el.classList.remove('is-valid'));
+      } else {
+        result.className = 'form-result err';
+        result.textContent = currentLang === 'es'
+          ? 'Hubo un problema al enviar. Intentá de nuevo.'
+          : 'There was a problem sending. Please try again.';
+      }
+    } catch (err) {
+      result.className = 'form-result err';
+      result.textContent = currentLang === 'es'
+        ? 'No se pudo conectar. Revisá tu internet.'
+        : 'Could not connect. Check your connection.';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
     }
   });
 
