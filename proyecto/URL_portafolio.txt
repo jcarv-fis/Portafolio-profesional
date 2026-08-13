@@ -2,12 +2,7 @@ PROYECTO FINAL - PORTAFOLIO WEB INTERACTIVO
 Jose Carvajal Mejias - Universidad Cenfotec
 
 URL del portafolio web (enlace remoto):
-https://jcarv-fis.github.io/proyecto/
+https://jcarv-fis.github.io/Portafolio-profesional/proyecto/
 
 Direccion del repositorio:
-https://github.com/jcarv-fis/jcarv-fis.github.io
-
-------------------------------------------------------------
-NOTA: Verifica que ambos enlaces esten correctos antes de subir
-este archivo a Moodle. Si tu repositorio tiene otro nombre,
-actualiza la segunda linea con la URL real.
+https://github.com/jcarv-fis/Portafolio-profesional
